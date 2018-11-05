@@ -62,50 +62,50 @@ Kii=Kii./repmat(max(1,sum(Kii,1)),[size(Kii,1) 1]);
 spec=[];
 specification.populations(1).name='E';
 specification.populations(1).size=Ne;
-specification.populations(1).equations='dV/dt=@current+iapp(k,:); V(0)=-65; iapp=AR2(Npop,T,amp,center); amp=0.05; center=0';
-specification.populations(1).mechanism_list={'MK08iNa','MK08iK','MK08iM','MK08iLeak'};
+specification.populations(1).equations='dV/dt=@current+iapp(k,:); V(0)=-65; iapp=MM08AR2(Npop,T,amp,center); amp=0.05; center=0';
+specification.populations(1).mechanism_list={'MM08iNa','MM08iK','MM08iM','MM08iLeak'};
 specification.populations(1).parameters={'amp',amp,'center',center};
 
 specification.populations(2).name='FS';
 specification.populations(2).size=Nfs;
 specification.populations(2).equations='dV/dt=@current+iapp; V(0)=-70; iapp=0';
-specification.populations(2).mechanism_list={'MK08iNa','MK08iK','MK08iLeak'};
+specification.populations(2).mechanism_list={'MM08iNa','MM08iK','MM08iLeak'};
 specification.populations(2).parameters={'iapp',iapp_fs};
 
 specification.populations(3).name='LTS';
 specification.populations(3).size=Nlts;
 specification.populations(3).equations='dV/dt=@current+iapp; V(0)=-70; iapp=0';
-specification.populations(3).mechanism_list={'MK08iNa','MK08iK','MK08iM','MK08iLeak'};
+specification.populations(3).mechanism_list={'MM08iNa','MM08iK','MM08iM','MM08iLeak'};
 specification.populations(3).parameters={'iapp',iapp_lts};
 
 specification.connections(1).direction='E->FS';
-specification.connections(1).mechanism_list={'MK08iAMPA'};
+specification.connections(1).mechanism_list={'MM08iAMPA'};
 specification.connections(1).parameters={'gAMPA',gei,'netcon',Kei};
 
 specification.connections(2).direction='E->LTS';
-specification.connections(2).mechanism_list={'MK08iAMPA'};
+specification.connections(2).mechanism_list={'MM08iAMPA'};
 specification.connections(2).parameters={'gAMPA',gei,'netcon',Kei};
 
 specification.connections(3).direction='FS->E';
-specification.connections(3).mechanism_list={'MK08iGABAa'};
+specification.connections(3).mechanism_list={'MM08iGABAa'};
 specification.connections(3).parameters={'gGABAa',gie,'tauGABAa',tauie,'netcon',Kie};
 
 specification.connections(4).direction='LTS->E';
-specification.connections(4).mechanism_list={'MK08iGABAa'};
+specification.connections(4).mechanism_list={'MM08iGABAa'};
 specification.connections(4).parameters={'gGABAa',gie,'tauGABAa',tauie,'netcon',Kie};
 
 specification.connections(5).direction='FS->LTS';
-specification.connections(5).mechanism_list={'MK08iGABAa'};
+specification.connections(5).mechanism_list={'MM08iGABAa'};
 specification.connections(5).parameters={'gGABAa',gii,'tauGABAa',taui,'netcon',Kii};
 
 specification.connections(6).direction='LTS->FS';
-specification.connections(6).mechanism_list={'MK08iGABAa'};
+specification.connections(6).mechanism_list={'MM08iGABAa'};
 specification.connections(6).parameters={'gGABAa',gii,'tauGABAa',taui,'netcon',Kii};
 
 specification.connections(7).direction='FS->FS';
-specification.connections(7).mechanism_list={'MK08iGABAa'};
+specification.connections(7).mechanism_list={'MM08iGABAa'};
 specification.connections(7).parameters={'gGABAa',gii,'tauGABAa',taui,'netcon',Kii};
 
 specification.connections(8).direction='LTS->LTS';
-specification.connections(8).mechanism_list={'MK08iGABAa'};
+specification.connections(8).mechanism_list={'MM08iGABAa'};
 specification.connections(8).parameters={'gGABAa',gii,'tauGABAa',taui,'netcon',Kii};

@@ -113,7 +113,7 @@ simulator_options={
 %% 2. Assemble the model specification
 % -------------------------------------------------------------------------
 numCellsScaleFactor = 1;
-spec = assembleMM08Spec(numCellsScaleFactor)
+spec = assembleMM08Spec(numCellsScaleFactor);
 
 % -------------------------------------------------------------------------
 %% 3. Run the simulation!
