@@ -15,7 +15,7 @@ cortex from:
 
 This is NOT intended as a bit-perfect reproduction of the original model, but
 rather just an open-source, adequate reproduction of the overall qualitative
-results. This was originally ported by @jsherfey.
+results. This was originally ported by [@jsherfey](https://github.com/jsherfey).
 
 ## Install and Usage
 
