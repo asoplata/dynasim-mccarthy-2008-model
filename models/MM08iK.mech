@@ -1,12 +1,33 @@
-% k
+% # MM08iK:
+%
+% Fast delayed rectifier potassium current, for generic cortical
+% cells used in the DynaSim implementation of (McCarthy et al.,
+% 2008).
+%
+% References:
+%     - McCarthy, M. M., Brown, E. N., & Kopell, N. (2008). Potential
+%     Network Mechanisms Mediating Electroencephalographic Beta
+%     Rhythm Changes during Propofol-Induced Paradoxical Excitation.
+%     The Journal of Neuroscience: The Official Journal of the
+%     Society for Neuroscience, 28(50), 13488–13504.
+%     https://doi.org/10.1523/JNEUROSCI.3536-08.2008
+%
+% Author: Jason Sherfey
+% Copyright (C) 2018 Jason Sherfey, Boston University, USA
+% Tags: potassium, current, intrinsic
+% --------------------------------------------------------------------
+% Parameters
+gK = 80
+EK = -100
+IC_noise=0
 
-igk = 80;
-iEk = -100;
-IC_noise=0;
+% Functions
+iK(X,n)=-gK.*n.^4.*(X-EK)
+
+% ODEs and ICs
 n' = 0.032.*(X+52)./(1-exp(-(X+52)./5)).*(1-n)-0.5*exp(-(X+57)./40).*n
 n(0)=0+IC_noise.*rand(1,Npop)
 % n(0)=.0701975+IC_noise.*rand(1,Npop)
-ik(X,n)=igk.*n.^4.*(X-iEk)
 
-@current += -ik(X,n)
-
+% Linkers
+@current += iK(X,n)

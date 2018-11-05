@@ -1,11 +1,29 @@
-% na
+% # MM08iNa:
+%
+% Fast sodium current, for generic cortical cells used in the DynaSim
+% implementation of (McCarthy et al., 2008).
+%
+% References:
+%     - McCarthy, M. M., Brown, E. N., & Kopell, N. (2008). Potential
+%     Network Mechanisms Mediating Electroencephalographic Beta
+%     Rhythm Changes during Propofol-Induced Paradoxical Excitation.
+%     The Journal of Neuroscience: The Official Journal of the
+%     Society for Neuroscience, 28(50), 13488–13504.
+%     https://doi.org/10.1523/JNEUROSCI.3536-08.2008
+%
+% Author: Jason Sherfey
+% Copyright (C) 2018 Jason Sherfey, Boston University, USA
+% Tags: sodium, current, intrinsic, pyramidal, soma
+% --------------------------------------------------------------------
+% Parameters
+gNa = 100 % mS/cm^2
+ENa = 50  % mV
+IC_noise=0
 
-% parameters
-igna = 100; % mS/cm^2
-iEna = 50;  % mV
-IC_noise=0;
+% Functions
+iNa(X,m,h) = -gNa.*m.^3.*h.*(X-ENa)
 
-% odes/ics
+% ODEs and ICs
 m' = 0.32.*(X+54)./(1-exp(-(X+54)./4)).*(1-m)-0.28*(X+27)./(exp((X+27)./5)-1).*m
 h' = 0.128.*exp(-(X+50)./18).*(1-h)-4./(1+exp(-(X+27)./5)).*h
 m(0) = 0+IC_noise.*rand(1,Npop)
@@ -13,9 +31,7 @@ m(0) = 0+IC_noise.*rand(1,Npop)
 h(0) = 0+IC_noise.*rand(1,Npop)
 % h(0) = .988805+IC_noise.*rand(1,Npop)
 
-% current
-ina(X,m,h) = igna.*m.^3.*h.*(X-iEna)
-
-@current += -ina(X,m,h)
+% Linkers
+@current += iNa(X,m,h)
 
 

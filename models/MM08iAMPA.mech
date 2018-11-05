@@ -1,24 +1,42 @@
-% iAMPA: synaptic current, fast threshold modulation with excitatory AMPAergic parameters
-% parameters
-gAMPA = [0.1] 	 % mS/cm2, maximal conductance
-EAMPA = [0] 	 % mV, reversal potential
-tauAMPA = [2]	 % ms, decay time constant
-tauAMPAr = [1] % ms, rise time constant
-IC = [0.0]
-IC_noise = [0]
- 
-% fixed variables
+% # MM08iAMPA:
+%
+% Normalized synaptic AMPAergic excitatory current for different
+% connections of (McCarthy et al., 2008). The conductances of the
+% different connections are set in the specification assembly
+% function.
+%
+% - References:
+%     - McCarthy, M. M., Brown, E. N., & Kopell, N. (2008). Potential
+%     Network Mechanisms Mediating Electroencephalographic Beta
+%     Rhythm Changes during Propofol-Induced Paradoxical Excitation.
+%     The Journal of Neuroscience: The Official Journal of the
+%     Society for Neuroscience, 28(50), 13488–13504.
+%     https://doi.org/10.1523/JNEUROSCI.3536-08.2008
+%
+% Author: Jason Sherfey
+% Copyright (C) 2018 Jason Sherfey, Boston University, USA
+% Tags: synapse, connection, excitation, ampa
+% --------------------------------------------------------------------
+% Parameters
+gAMPA = 0.1  % mS/cm2, maximal conductance
+EAMPA = 0    % mV, reversal potential
+tauAMPA = 2  % ms, decay time constant
+tauAMPAr = 1 % ms, rise time constant
+IC = 0.0
+IC_noise = 0
+
+% Connectivity
 netcon = ones(N_pre,N_post) % default connectivity matrix (all-to-all)
 
-% functions
-IAMPA(X,s) = (gAMPA.*(s*netcon).*(X-EAMPA))
- 
+% Functions
+IAMPA(X,s) = -gAMPA.*(s*netcon).*(X-EAMPA)
+
 % ODEs and ICs
 s' = -s./tauAMPA + ((1-s)./tauAMPAr).*(1+tanh(X_pre./4)).*5
 s(0) = IC+IC_noise.*rand(1,N_pre)
 
 monitor functions % always record the synaptic current
- 
+
 % linkers
-@current += -IAMPA(X_post,s)
- 
+@current += IAMPA(X_post,s)
+

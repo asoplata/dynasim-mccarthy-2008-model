@@ -1,24 +1,41 @@
-% iGABAa: synaptic current, fast threshold modulation with inhibitory GABAa-ergic parameters
-% parameters
-gGABAa = [0.25]		% mS/cm2, maximal conductance
-EGABAa = [-85]		% mV, reversal potential
-tauGABAa = [10]		% ms, decay time constant
-tauGABAar = [1]	% ms, rise time constant
-IC = [0.0]
-IC_noise = [0]
+% # MM08iGABAa:
+%
+% Normalized synaptic GABAergic inhibitory current for different
+% connections of (McCarthy et al., 2008). The conductances of the
+% different connections are set in the specification assembly
+% function.
+%
+% - References:
+%     - McCarthy, M. M., Brown, E. N., & Kopell, N. (2008). Potential
+%     Network Mechanisms Mediating Electroencephalographic Beta
+%     Rhythm Changes during Propofol-Induced Paradoxical Excitation.
+%     The Journal of Neuroscience: The Official Journal of the
+%     Society for Neuroscience, 28(50), 13488–13504.
+%     https://doi.org/10.1523/JNEUROSCI.3536-08.2008
+%
+% Author: Jason Sherfey
+% Copyright (C) 2018 Jason Sherfey, Boston University, USA
+% Tags: synapse, connection, inhibition, gabaa
+% --------------------------------------------------------------------
+% Parameters
+gGABAa = 0.25 % mS/cm2, maximal conductance
+EGABAa = -85  % mV, reversal potential
+tauGABAa = 10 % ms, decay time constant
+tauGABAar = 1 % ms, rise time constant
+IC = 0.0
+IC_noise = 0
 
-% fixed variables
+% Connectivity
 netcon = ones(N_pre,N_post) % default connectivity matrix (all-to-all)
 
-% functions
-IGABAa(X,s) = (gGABAa.*(s*netcon).*(X-EGABAa))
- 
+% Functions
+IGABAa(X,s) = -gGABAa.*(s*netcon).*(X-EGABAa)
+
 % ODEs and ICs
 s' = -s./tauGABAa + ((1-s)./tauGABAar).*(1+tanh(X_pre./4)).*2
 s(0) = IC+IC_noise.*rand(1,N_pre)
 
 monitor functions % always record the synaptic current
- 
-% linkers
-@current += -IGABAa(X_post,s)
 
+% Linkers
+@current += IGABAa(X_post,s)
